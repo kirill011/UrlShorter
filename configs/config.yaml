@@ -1,0 +1,9 @@
+host: localhost
+user: postgres
+password: your password
+port: 5432
+sslMode: disable
+timeZone: Europe/Moscow
+dbName: UrlShorter
+runIp: localhost
+runPort: 8080
