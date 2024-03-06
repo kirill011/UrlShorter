@@ -18,21 +18,23 @@ func NewHandlers(s services.Service) Handlers {
 
 func (h *Handlers) CreateUrl(c echo.Context) error {
 
-	var FullUrl string
+	var Req struct {
+		FullUrl string
+	}
 
-	err := c.Bind(&FullUrl)
+	err := c.Bind(&Req)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err)
 	}
 
 	//Валидация полученного URL
-	matched, _ := regexp.MatchString(`[-a-zA-Z0-9@:%_\+.~#?&\/=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&\/=]*)?`, FullUrl)
+	matched, _ := regexp.MatchString(`[-a-zA-Z0-9@:%_\+.~#?&\/=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&\/=]*)?`, Req.FullUrl)
 
 	if !matched {
 		return c.JSON(http.StatusBadRequest, "Request body does not contain a URL")
 	}
 
-	short, err := h.s.CreateUrl(FullUrl)
+	short, err := h.s.CreateUrl(Req.FullUrl)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err)
 	}
