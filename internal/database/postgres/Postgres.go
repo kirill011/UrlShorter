@@ -3,6 +3,7 @@ package postgres
 import (
 	"UrlShorter/internal/models"
 	"fmt"
+	"log/slog"
 
 	slogGorm "github.com/orandin/slog-gorm"
 	"gorm.io/driver/postgres"
@@ -67,6 +68,8 @@ func NewPostgres(host, user, password, port, sslmode, timezone, dbName string) *
 	if !dbNameExists {
 		sql := fmt.Sprintf("CREATE DATABASE \"%s\";", dbName)
 		db.Exec(sql)
+
+		slog.Info("Database created")
 	}
 
 	db, err = gorm.Open(postgres.Open(databaseString), &gorm.Config{
